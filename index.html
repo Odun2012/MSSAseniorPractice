@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spelling Bee App</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; background: #f0f8ff; text-align: center; padding: 2em; }
+        .quiz-container { background: #a1c9eb; max-width: 600px; margin: auto; padding: 2em; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+        .definition, .timer, .question-number { margin: 15px 0; color: red; }
+        .input-area input { padding: 10px; width: 80%; }
+        button { padding: 10px 20px; background: #007bff; color: #fff; border: none; cursor: pointer; border-radius: 5px; }
+        button:hover { background: #0056b3; }
+        .results span { display: block; margin: 10px 0; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>MSSA Senior (practice)</h1>
+        <div class="timer" id="timer">25</div>
+        <div class="question-number" id="question-number">Question 1 of 30</div>
+        <div class="definition" id="definition"></div>
+        <div class="input-area"><input id="user-input" placeholder="Type the spelling here..."></div>
+        <button id="next-button">Next</button>
+        <button id="submit-button" style="display:none">Submit</button>
+    </div>
+    <div id="results"></div>
+
+    <script>
+        const words = ["MACAROON", "REPERTOIRE", "BIZARRE", "CONNOISSEUR", "ECCLESIASTICAL", "SUET", "RICOCHET", "LETTUCE", "LIMB", "DELICATESSEN", "MULATTO", "POSTHUMOUS", "NOMAD", "MULLIGATAWNY", "ARTERIOSCLEROSIS", "GAUCHE", "BARLEY", "RAPPORT", "EMBOSS", "PUSILLANIMOUS", "PIROUETTE", "ASYLUM", "AURIFEROUS", "SACROSANCT", "BOULEVARD", "SECEDE", "FINAGLE", "BARRAGE", "HAND-WROUGHT", "AGGLOMERATION"];
+        const definitions = ["A small sweet cake", "A collection of works", "Very strange", "Expert judge in matters of taste", "Relating to the church", "A hard animal fat", "A rebound or skip", "A leafy vegetable", "A projecting part of a structure", "Specialised food store", "Person of mixed race", "Occurring after death", "Wandering person", "Spicy soup", "Thickening of arteries", "Socially awkward", "A cereal grain", "Close relationship", "To decorate by carving", "Timid or cowardly", "A ballet spin", "Shelter for protection", "Containing gold", "Extremely sacred", "Wide street", "Withdraw formally", "To trick", "Heavy bombardment", "Made by hand", "Cluster of things"];
+
+        let current = 0, score = 0, userAnswers = [], timerInterval;
+        const timerEl = document.getElementById("timer"), inputEl = document.getElementById("user-input"), resultsEl = document.getElementById("results");
+
+        function showQuestion() {
+            if (current < words.length) {
+                document.getElementById("definition").textContent = definitions[current];
+                document.getElementById("question-number").textContent = `Question ${current + 1} of ${words.length}`;
+                inputEl.value = "";
+                startTimer();
+            } else showResults();
+        }
+
+        function startTimer() {
+            clearInterval(timerInterval);
+            let timeLeft = 25;
+            timerEl.textContent = timeLeft;
+            timerInterval = setInterval(() => {
+                timerEl.textContent = --timeLeft;
+                if (timeLeft <= 0) { clearInterval(timerInterval); nextQuestion(); }
+            }, 1000);
+        }
+
+        function nextQuestion() {
+            userAnswers.push(inputEl.value.trim().toUpperCase());
+            if (userAnswers[current] === words[current]) score++;
+            current++; showQuestion();
+        }
+
+        function showResults() {
+            clearInterval(timerInterval);
+            let resultHtml = `<h2>Your Score: ${score} / ${words.length}</h2>`;
+            resultHtml += words.map((word, i) => {
+                const userAnswer = userAnswers[i] || "";
+                const correct = userAnswer === word;
+                return `<span style="color:${correct ? 'green' : 'red'}">Q${i + 1}: ${definitions[i]}<br>User: ${userAnswer} | Correct: ${word}</span>`;
+            }).join('');
+            resultsEl.innerHTML = `${resultHtml}<br><button onclick="retakeQuiz()">Retake Quiz</button><button onclick="endQuiz()">End Quiz</button>`;
+            document.querySelector(".quiz-container").style.display = "none";
+        }
+
+        function retakeQuiz() {
+            current = score = 0; userAnswers = [];
+            shuffleArray(words);
+            shuffleArray(definitions);
+            document.querySelector(".quiz-container").style.display = "block";
+            resultsEl.innerHTML = ""; showQuestion();
+        }
+
+        function endQuiz() {
+            resultsEl.innerHTML = `<h3>Thank you for participating!</h3>`;
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        document.getElementById("next-button").addEventListener("click", nextQuestion);
+        document.getElementById("submit-button").addEventListener("click", showResults);
+
+        showQuestion();
+    </script>
+</body>
+</html>
