@@ -6,17 +6,19 @@
     <title>Spelling Bee App</title>
     <style>
         body { font-family: 'Arial', sans-serif; background: #f0f8ff; text-align: center; padding: 2em; }
-        .quiz-container { background: #a1c9eb; max-width: 600px; margin: auto; padding: 2em; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); }
+        .quiz-container { background: #a1c9eb; max-width: 600px; margin: auto; padding: 2em; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2); background-image: url(Senior2.jpg); }
         .definition, .timer, .question-number { margin: 15px 0; color: red; }
+        .definition{ color: #0056b3;}
         .input-area input { padding: 10px; width: 80%; }
         button { padding: 10px 20px; background: #007bff; color: #fff; border: none; cursor: pointer; border-radius: 5px; }
         button:hover { background: #0056b3; }
         .results span { display: block; margin: 10px 0; }
+        .head{ background-color: black; color: #fff;}
     </style>
 </head>
 <body>
     <div class="quiz-container">
-        <h1>MSSA Senior (practice)</h1>
+        <h1 class="head"> MSSA Spellers Spelling Practice (Senior)</h1>
         <div class="timer" id="timer">25</div>
         <div class="question-number" id="question-number">Question 1 of 30</div>
         <div class="definition" id="definition"></div>
@@ -27,8 +29,8 @@
     <div id="results"></div>
 
     <script>
-        const words = ["MACAROON", "REPERTOIRE", "BIZARRE", "CONNOISSEUR", "ECCLESIASTICAL", "SUET", "RICOCHET", "LETTUCE", "LIMB", "DELICATESSEN", "MULATTO", "POSTHUMOUS", "NOMAD", "MULLIGATAWNY", "ARTERIOSCLEROSIS", "GAUCHE", "BARLEY", "RAPPORT", "EMBOSS", "PUSILLANIMOUS", "PIROUETTE", "ASYLUM", "AURIFEROUS", "SACROSANCT", "BOULEVARD", "SECEDE", "FINAGLE", "BARRAGE", "HAND-WROUGHT", "AGGLOMERATION"];
-        const definitions = ["A small sweet cake", "A collection of works", "Very strange", "Expert judge in matters of taste", "Relating to the church", "A hard animal fat", "A rebound or skip", "A leafy vegetable", "A projecting part of a structure", "Specialised food store", "Person of mixed race", "Occurring after death", "Wandering person", "Spicy soup", "Thickening of arteries", "Socially awkward", "A cereal grain", "Close relationship", "To decorate by carving", "Timid or cowardly", "A ballet spin", "Shelter for protection", "Containing gold", "Extremely sacred", "Wide street", "Withdraw formally", "To trick", "Heavy bombardment", "Made by hand", "Cluster of things"];
+        const words = ["MACAROON", "REPERTOIRE", "BIZARRE", "CONNOISSEUR", "ECCLESIASTICAL", "SUET", "RICOCHET", "LETTUCE", "LIMB", "DELICATESSEN", "MULATTO", "POSTHUMOUS", "NOMAD", "MULLIGATAWNY", "ARTERIOSCLEROSIS", "GAUCHE", "BARLEY", "RAPPORT", "EMBOSS", "PUSILLANIMOUS", "PIROUETTE", "ASYLUM", "AURIFEROUS", "SACROSANCT", "BOULEVARD", "SECEDE", "FINAGLE", "FRICASSE", "HAND-WROUGHT", "AGGLOMERATION"];
+        const definitions = ["cookie made chiefly of egg whites, sugar and coconut or almond", "The stock of special skills, devices, techniques of a particular person or particular field of endeavour.", "Very strange or unusual", "A person who has expert knowledge and keen discrimination in some field, especially in the fine arts or in matter or taste", "Of or related to the church", "The hard fat about the kidneys and loins of beef and mutton", "A glancing rebound", "Any of a genus of plant grown for its edible green leaves", "An arm, leg, or wing", "A shop where sandwich items, meats and cheese are sold.", "The offspring of a white person and a black person", "Occurring, awarded, happening, or appearing after the death of the originator", "Member of tribe of people having no permanent home; wanderer", "An East Indian soup of meat, flavoured with curry", "Chronic disease characterised by hardening and thickening of the arterial walls", "Lacking social grace; tactless", "A cereal grass; grain used in making soups, malts and as feed for animals", "Relationship, especially a close one; agreement; harmony", "To cover or decorate with designs; to carve, raise or print a design on a surface; embellish, ornament", "Without spirit or bravery", "A rapid whirling or turning on the toe or ball of the foot", "A place of retreat and security", "Containing gold", "Very scared, holy, or inviolable", "A broad often landscaped thoroughfare", "To withdraw from an organisation", "To cheat; to get something by trickery", "A dish of meat cut into pieces and stewed in a gravy", "Formed or shaped by hand as metal objects", "A mass or collection of things; an assemblage",];
 
         let current = 0, score = 0, userAnswers = [], timerInterval;
         const timerEl = document.getElementById("timer"), inputEl = document.getElementById("user-input"), resultsEl = document.getElementById("results");
